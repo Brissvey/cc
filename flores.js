@@ -73,7 +73,7 @@ const flores = [
         tamaño: 50,
         rotacion: 8,
         foto: "fotos/foto6.jpeg",
-        mensaje: "Me enconta que tengas las confinza de compartir tus momentos felices de tu familia conmigo hola."
+        mensaje: "Me enconta que tengas las confinza de compartir tus momentos felices de tu familia conmigo."
     }
 
 ];
