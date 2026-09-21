@@ -19,7 +19,7 @@ const flores = [
         tamaño: 75,
         rotacion: 10,
         foto: "fotos/foto2.jpeg",
-        mensaje: "Ese dia que fuimos a el pollo su la vez mas feliz que me senti en el pollo"
+        mensaje: "Ese dia que fuimos a el pollo, fue la vez que me senti mas feliz en el pollo"
     },
 
     {
@@ -28,7 +28,7 @@ const flores = [
         tamaño: 55,
         rotacion: -15,
         foto: "fotos/foto3.jpeg",
-        mensaje: "Ese dia te mira puro payacito jajaj"
+        mensaje: "Ese dia te mira puro payasito jajaj"
     },
 
     {
@@ -37,7 +37,7 @@ const flores = [
         tamaño: 60,
         rotacion: 15,
         foto: "fotos/foto4.jpeg",
-        mensaje: "Esa fue mi primera vez en dennis ya la pase incrible contigo mas cuadno empezamos a llegar el albun del mundial"
+        mensaje: "Esa fue mi primera vez en Dennis y me la pase incrible contigo, mas cuadno empezamos a llegar el albun del mundial"
     },
 
     {
@@ -46,7 +46,7 @@ const flores = [
         tamaño: 60,
         rotacion: -5,
         foto: "fotos/foto5.jpeg",
-        mensaje: "Extraño esos dias cuando te iba a dejar a la u te gustaba pasar tiempo."
+        mensaje: "Extraño esos dias cuando te iba a dejar a la u poruqe pasaba tiempo contigo."
     },
 
     {
@@ -55,7 +55,7 @@ const flores = [
         tamaño: 65,
         rotacion: 8,
         foto: "fotos/foto8.jpeg",
-        mensaje: "Ese dia fue muy especial para mi porque lo pase contigo, pero ahora siento que ya no me quieres ver; si ya no quieres que te moleste solo dimelo."
+        mensaje: "Ese dia fue muy especial para mi porque lo pase contigo, pero ahora siento que ya no me quieres ver, sinceremente discukoame si te jodo mucho por veces"
     },
 
     {
