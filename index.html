@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Flor Amarilla 💛</title>
+    
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            overflow: hidden;
+            background: #020500;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        /* ==========================================
+           CANVAS DE PARTÍCULAS
+        ========================================== */
+
+        #particulas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+
+        /* ==========================================
+           MENSAJE PRINCIPAL
+        ========================================== */
+
+        .mensaje {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%) scale(0);
+
+            z-index: 20;
+
+            color: #ffe600;
+
+            font-size: clamp(45px, 7vw, 90px);
+
+            font-weight: bold;
+
+            text-align: center;
+
+            white-space: nowrap;
+
+            text-shadow:
+                0 0 10px #ffe600,
+                0 0 25px #ffe600,
+                0 0 50px #ffcc00,
+                0 0 90px #ffcc00;
+
+            transition:
+                transform 1.5s ease,
+                opacity 1.5s ease;
+
+            opacity: 0;
+        }
+
+
+        .mensaje.mostrar {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+
+            animation: latido 2s infinite;
+        }
+
+
+        @keyframes latido {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.08);
+            }
+        }
+
+
+        /* ==========================================
+           FLORES
+        ========================================== */
+
+        #flores {
+            transition: opacity 2s ease;
+        }
+
+
+        .flor {
+
+            cursor: pointer;
+
+            user-select: none;
+
+            transition:
+                transform 0.3s ease,
+                filter 0.3s ease;
+
+        }
+
+
+        .flor:hover {
+
+            filter:
+                drop-shadow(0 0 20px #ffe600)
+                drop-shadow(0 0 35px #ffcc00) !important;
+
+        }
+
+
+        /* ==========================================
+           MODAL
+        ========================================== */
+
+        #modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 100;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background:
+                rgba(0, 0, 0, 0.75);
+
+            backdrop-filter: blur(8px);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition:
+                opacity 0.4s ease,
+                visibility 0.4s ease;
+
+            padding: 20px;
+
+        }
+
+
+        #modal.activo {
+
+            opacity: 1;
+
+            visibility: visible;
+
+        }
+
+
+        .modal-contenido {
+
+            position: relative;
+
+            width: min(90vw, 500px);
+
+            max-height: 90vh;
+
+            padding: 20px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(20, 20, 0, 0.98),
+                    rgba(5, 8, 0, 0.98)
+                );
+
+            border: 2px solid #ffe600;
+
+            box-shadow:
+                0 0 20px #ffe600,
+                0 0 50px rgba(255, 230, 0, 0.5);
+
+            text-align: center;
+
+            transform: scale(0.7);
+
+            transition:
+                transform 0.4s ease;
+
+        }
+
+
+        #modal.activo .modal-contenido {
+
+            transform: scale(1);
+
+        }
+
+
+        /* ==========================================
+           FOTO
+        ========================================== */
+
+        #modalFoto {
+
+            display: block;
+
+            width: 100%;
+
+            max-height: 55vh;
+
+            object-fit: contain;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 0 20px rgba(255, 230, 0, 0.7);
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* ==========================================
+           MENSAJE DEL MODAL
+        ========================================== */
+
+        #modalMensaje {
+
+            color: white;
+
+            font-size: clamp(20px, 4vw, 28px);
+
+            font-weight: bold;
+
+            line-height: 1.4;
+
+            text-shadow:
+                0 0 5px white,
+                0 0 15px #ffe600,
+                0 0 25px #ffe600;
+
+        }
+
+
+        /* ==========================================
+           BOTÓN CERRAR
+        ========================================== */
+
+        #cerrarModal {
+
+            position: absolute;
+
+            top: 10px;
+
+            right: 15px;
+
+            width: 40px;
+
+            height: 40px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: rgba(0, 0, 0, 0.7);
+
+            color: white;
+
+            font-size: 25px;
+
+            cursor: pointer;
+
+            z-index: 10;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+
+        }
+
+
+        #cerrarModal:hover {
+
+            transform: scale(1.15);
+
+            background: #ffe600;
+
+            color: black;
+
+        }
+
+
+        /* ==========================================
+           MÓVIL
+        ========================================== */
+
+        @media (max-width: 600px) {
+
+            .mensaje {
+
+                font-size: 45px;
+
+            }
+
+            .modal-contenido {
+
+                padding: 15px;
+
+            }
+
+            #modalFoto {
+
+                max-height: 50vh;
+
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         PARTÍCULAS
+    ========================================== -->
+
+    <canvas id="particulas"></canvas>
+
+
+    <!-- ==========================================
+         MENSAJE PRINCIPAL
+    ========================================== -->
+
+    <h1 class="mensaje">
+        haz click en las flores
+    </h1>
+
+
+    <!-- ==========================================
+         MODAL
+    ========================================== -->
+
+    <div id="modal">
+
+        <div class="modal-contenido">
+
+            <button id="cerrarModal">
+                ×
+            </button>
+
+            <img
+                id="modalFoto"
+                src=""
+                alt="Foto"
+            >
+
+            <div id="modalMensaje"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+        const canvas =
+            document.getElementById("particulas");
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        let particulas = [];
+
+
+        /* ==========================================
+           AJUSTAR CANVAS
+        ========================================== */
+
+        function ajustarCanvas() {
+
+            canvas.width =
+                window.innerWidth;
+
+            canvas.height =
+                window.innerHeight;
+
+        }
+
+
+        ajustarCanvas();
+
+
+        /* ==========================================
+           PARTÍCULA
+        ========================================== */
+
+        class Particula {
+
+            constructor() {
+
+                this.x =
+                    Math.random() * canvas.width;
+
+                this.y =
+                    Math.random() * canvas.height;
+
+                this.tamano =
+                    Math.random() * 2.5 + 0.5;
+
+                this.velocidadX =
+                    (Math.random() - 0.5) * 0.7;
+
+                this.velocidadY =
+                    (Math.random() - 0.5) * 0.7;
+
+                this.opacidad =
+                    Math.random() * 0.8 + 0.2;
+
+            }
+
+
+            actualizar() {
+
+                this.x +=
+                    this.velocidadX;
+
+                this.y +=
+                    this.velocidadY;
+
+
+                if (this.x < 0)
+                    this.x = canvas.width;
+
+                if (this.x > canvas.width)
+                    this.x = 0;
+
+
+                if (this.y < 0)
+                    this.y = canvas.height;
+
+                if (this.y > canvas.height)
+                    this.y = 0;
+
+            }
+
+
+            dibujar() {
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    this.x,
+                    this.y,
+                    this.tamano,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fillStyle =
+                    `rgba(
+                        255,
+                        230,
+                        0,
+                        ${this.opacidad}
+                    )`;
+
+
+                ctx.shadowBlur = 10;
+
+                ctx.shadowColor =
+                    "#ffe600";
+
+
+                ctx.fill();
+
+                ctx.shadowBlur = 0;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           CREAR PARTÍCULAS
+        ========================================== */
+
+        for (
+            let i = 0;
+            i < 700;
+            i++
+        ) {
+
+            particulas.push(
+                new Particula()
+            );
+
+        }
+
+
+        /* ==========================================
+           ANIMAR PARTÍCULAS
+        ========================================== */
+
+        function animar() {
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            particulas.forEach(
+                particula => {
+
+                    particula.actualizar();
+
+                    particula.dibujar();
+
+                }
+            );
+
+
+            requestAnimationFrame(
+                animar
+            );
+
+        }
+
+
+        animar();
+
+
+        /* ==========================================
+           RESIZE
+        ========================================== */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                ajustarCanvas();
+
+            }
+        );
+
+    </script>
+
+
+    <!-- ==========================================
+         FLORES.JS
+    ========================================== -->
+
+    <script src="flores.js"></script>
+
+
+</body>
+</html>
